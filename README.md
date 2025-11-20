@@ -1,6 +1,6 @@
 ## Project Overview
 
-**localLLLMChat** is a Java-based AI chat application designed for privacy, speed, and flexibility. 
+**localLLMChat** is a Java-based AI chat application designed for privacy, speed, and flexibility. 
 It leverages a local Large Language Model (LLM) to provide intelligent conversational capabilities without relying on external cloud services.
 It is built as a follow-up to the [Spring AI Course](https://www.udemy.com/course/spring-ai-rag/) on Udemy.
 
@@ -16,7 +16,7 @@ It is built as a follow-up to the [Spring AI Course](https://www.udemy.com/cours
    `git clone <your-repo-url>`
 
 2. **Build the Project:**  
-   Use Maven to build the project.
+   `mvn clean package`
 
 3. **Run the Application:**  
    Start the application using your preferred IDE or via the command line:  
