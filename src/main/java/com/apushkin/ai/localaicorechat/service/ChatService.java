@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.apushkin.ai.localaicorechat.model.Role.USER;
-
 @Service
 public class ChatService {
 
@@ -46,16 +44,16 @@ public class ChatService {
         chatRepository.deleteById(chatId);
     }
 
+    @Transactional
     public void proceedInteraction(Long chatId, String prompt) {
         //  Use self-injection to ensure transactional methods are properly proxied
-        myProxy.addChatEntry(chatId, prompt, USER);
+        myProxy.addChatEntry(chatId, prompt, Role.USER);
 
         String answer = chatClient.prompt().user(prompt).call().content();
 
         myProxy.addChatEntry(chatId, answer, Role.ASSISTANT);
     }
 
-    @Transactional
     public void addChatEntry(Long chatId, String prompt, Role role) {
         Chat chat = chatRepository.findById(chatId).orElseThrow();
         chat.addChatEntry(ChatEntry.builder()

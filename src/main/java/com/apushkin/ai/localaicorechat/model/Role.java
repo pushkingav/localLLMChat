@@ -12,6 +12,10 @@ public enum Role {
 
     private final String role;
 
+    public String getRole() {
+        return role;
+    }
+
     public static Role getRole(String roleName) {
         return Arrays.stream(Role.values()).filter(r -> r.role.equalsIgnoreCase(roleName))
                 .findFirst()

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Add user's message to chat
                 const userDiv = document.createElement("div");
                 userDiv.className = "message user";
-                userDiv.innerHTML = `<img src="/images/user.png" alt="User"><div class="bubble">${prompt}</div>`;
+                userDiv.innerHTML = `<img src="/images/user.jpg" alt="User"><div class="bubble">${prompt}</div>`;
                 messagesContainer.appendChild(userDiv);
 
                 const pathParts = window.location.pathname.split("/");
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const aiDiv = document.createElement("div");
                 aiDiv.className = "message mentor";
                 // Add assistant image
-                aiDiv.innerHTML = `<img src="/images/mentor.png" alt="Mentor">`;
+                aiDiv.innerHTML = `<img src="/images/mentor.jpg" alt="Mentor">`;
                 // Create element for content where the response will be inserted
                 const aiBubble = document.createElement("div");
                 aiBubble.className = "bubble";
