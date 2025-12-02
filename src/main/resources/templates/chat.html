@@ -5,7 +5,7 @@
     <title th:text="${chat != null} ? 'Pushkin GPT — ' + chat.title : 'Pushkin GPT'">Pushkin GPT</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}"/>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<!--    <script defer th:src="@{/js/chat.js}"></script>-->
+    <script defer th:src="@{/js/chat.js}"></script>
 </head>
 <body class="comic-body">
 <div class="chat-container">
@@ -61,7 +61,7 @@
                 <div class="input-bubble">
                     <label for="chat-input" class="sr-only">Ask...</label>
                     <textarea id="chat-input" name="prompt" placeholder="Ask..." required></textarea>
-                    <button type="submit" id="send-button">SEND</button>
+                    <button type="button" id="send-button">SEND</button>
                 </div>
             </form>
         </div>

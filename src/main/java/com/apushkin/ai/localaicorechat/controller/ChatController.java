@@ -43,7 +43,7 @@ public class ChatController {
         return "redirect:/";
     }
 
-    @PostMapping("/chat/{chatId}/entry")
+//    @PostMapping("/chat/{chatId}/entry")
     public String talkToModel(@PathVariable Long chatId, @RequestParam String prompt) {
         chatService.proceedInteraction(chatId, prompt);
         return "redirect:/chat/" + chatId;
