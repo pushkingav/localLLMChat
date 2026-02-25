@@ -6,9 +6,9 @@ import com.apushkin.ai.localaicorechat.model.Role;
 import com.apushkin.ai.localaicorechat.repository.ChatRepository;
 import lombok.SneakyThrows;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.model.Generation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,14 +22,16 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
     private final ChatClient chatClient;
+    private final PostgresChatMemory postgresChatMemory;
 
     @Autowired
     private ChatService myProxy;
 
 
-    public ChatService(ChatRepository chatRepository, ChatClient chatClient) {
+    public ChatService(ChatRepository chatRepository, ChatClient chatClient, PostgresChatMemory postgresChatMemory) {
         this.chatRepository = chatRepository;
         this.chatClient = chatClient;
+        this.postgresChatMemory = postgresChatMemory;
     }
 
     public List<Chat> getAllChats() {
@@ -74,16 +76,14 @@ public class ChatService {
     }
 
     public SseEmitter proceedInteractionWithStreaming(Long chatId, String prompt) {
-        myProxy.addChatEntry(chatId, prompt, Role.USER);
         SseEmitter emitter = new SseEmitter(0L);
         StringBuilder answerBuilder = new StringBuilder();
-        chatClient.prompt().user(prompt).stream()
+        chatClient.prompt().user(prompt)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .stream()
                 .chatResponse()
                 .subscribe(chatResponse -> proceedToken(chatResponse, emitter, answerBuilder),
-                        emitter::completeWithError, () -> {
-                            myProxy.addChatEntry(chatId, answerBuilder.toString(), Role.ASSISTANT);
-                        }
-                );
+                        emitter::completeWithError);
         return emitter;
     }
 }
