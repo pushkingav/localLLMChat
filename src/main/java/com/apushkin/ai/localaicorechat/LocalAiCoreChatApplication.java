@@ -1,11 +1,11 @@
 package com.apushkin.ai.localaicorechat;
 
 import com.apushkin.ai.localaicorechat.repository.ChatRepository;
+import com.apushkin.ai.localaicorechat.service.PostgresChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,9 +22,7 @@ public class LocalAiCoreChatApplication {
 
     static void main(String[] args) {
         ChatClient chatClient = SpringApplication.run(LocalAiCoreChatApplication.class, args).getBean(ChatClient.class);
-        System.out.println(chatClient.prompt()
-                .user("Дай мне первую строчку богемской рапсодии")
-                .call().content());
+//        System.out.println(chatClient.prompt() .user("Дай мне первую строчку богемской рапсодии") .call().content());
     }
 
     @Bean
@@ -38,7 +36,7 @@ public class LocalAiCoreChatApplication {
     }
 
     private ChatMemory getChatMemory() {
-        return MessageWindowChatMemory.builder()
+        return PostgresChatMemory.builder()
                 .maxMessages(2)
                 .chatMemoryRepository(chatRepository)
                 .build();

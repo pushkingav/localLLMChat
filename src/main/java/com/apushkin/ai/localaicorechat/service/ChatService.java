@@ -19,19 +19,15 @@ import java.util.List;
 
 @Service
 public class ChatService {
-
     private final ChatRepository chatRepository;
     private final ChatClient chatClient;
-    private final PostgresChatMemory postgresChatMemory;
 
     @Autowired
     private ChatService myProxy;
 
-
-    public ChatService(ChatRepository chatRepository, ChatClient chatClient, PostgresChatMemory postgresChatMemory) {
+    public ChatService(ChatRepository chatRepository, ChatClient chatClient) {
         this.chatRepository = chatRepository;
         this.chatClient = chatClient;
-        this.postgresChatMemory = postgresChatMemory;
     }
 
     public List<Chat> getAllChats() {
