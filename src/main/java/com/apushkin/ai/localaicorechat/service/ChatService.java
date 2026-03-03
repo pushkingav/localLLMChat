@@ -79,7 +79,7 @@ public class ChatService {
                 .stream()
                 .chatResponse()
                 .subscribe(chatResponse -> proceedToken(chatResponse, emitter, answerBuilder),
-                        emitter::completeWithError);
+                        emitter::completeWithError, emitter::complete);
         return emitter;
     }
 }
