@@ -36,7 +36,7 @@ public class DocumentLoaderService implements CommandLineRunner {
         resources.stream()
                 .map(resource -> Pair.of(resource, calcContentHash(resource)))
                 .filter(pair -> !documentRepository
-                    .existsByFileNameAndContentHash(pair.getFirst().getFilename(), pair.getSecond()))
+                    .existsByFilenameAndContentHash(pair.getFirst().getFilename(), pair.getSecond()))
                 .forEach(pair -> {
                     List<Document> documents = new TextReader(pair.getFirst()).get();
                     TokenTextSplitter textSplitter = TokenTextSplitter.builder().withChunkSize(500).build();
@@ -46,7 +46,7 @@ public class DocumentLoaderService implements CommandLineRunner {
                     LoadedDocument loadedDocument = LoadedDocument.builder()
                             .documentType("txt")
                             .chunkCount(chunks.size())
-                            .fileName(pair.getFirst().getFilename())
+                            .filename(pair.getFirst().getFilename())
                             .contentHash(pair.getSecond())
                             .build();
 
