@@ -5,7 +5,9 @@ import com.apushkin.ai.localaicorechat.service.PostgresChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,9 +17,11 @@ import org.springframework.context.annotation.Bean;
 public class LocalAiCoreChatApplication {
 
     private final ChatRepository chatRepository;
+    private final VectorStore vectorStore;
 
-    public LocalAiCoreChatApplication(@Autowired ChatRepository chatRepository) {
+    public LocalAiCoreChatApplication(@Autowired ChatRepository chatRepository, VectorStore vectorStore) {
         this.chatRepository = chatRepository;
+        this.vectorStore = vectorStore;
     }
 
     static void main(String[] args) {
@@ -27,12 +31,16 @@ public class LocalAiCoreChatApplication {
 
     @Bean
     public ChatClient chatClient(ChatClient.Builder builder) {
-        return builder.defaultAdvisors(getAdvisor())
+        return builder.defaultAdvisors(getHistoryAdvisor(), getRagAdvisor())
                 .build();
     }
 
-    private Advisor getAdvisor() {
+    private Advisor getHistoryAdvisor() {
        return MessageChatMemoryAdvisor.builder(getChatMemory()).build();
+    }
+
+    private Advisor getRagAdvisor() {
+        return QuestionAnswerAdvisor.builder(vectorStore).build();
     }
 
     private ChatMemory getChatMemory() {
